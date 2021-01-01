@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_map"
+        android:title="Carte"/>
+
+    <item
+        android:id="@+id/action_list"
+        android:title="Liste"/>
+
+    <item
+        android:id="@+id/action_test"
+        android:title="Liste detaille"/>
+
+    <item
+        android:id="@+id/action_favorite"
+        android:title="Favorites"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_name"/>
+
+</menu>

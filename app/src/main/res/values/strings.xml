@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">FindMe</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Annuler</string>
+    <string-array name="rows_array">
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+    </string-array>
+</resources>
