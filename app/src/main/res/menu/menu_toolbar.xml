@@ -5,7 +5,8 @@
 
     <item
         android:id="@+id/action_map"
-        android:title="Carte"/>
+        android:title="Carte"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_list"

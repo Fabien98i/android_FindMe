@@ -1,8 +1,8 @@
 package com.ynov.findme;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,18 +24,31 @@ import com.google.gson.Gson;
 import com.ynov.findme.models.ApiObject;
 import com.ynov.findme.utils.Constant;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
-public class DetailsGare extends AppCompatActivity {
+
+
+public class DetailsGare extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     TextView title_txt;
     ListView list_nature;
+    TextView textDate;
+    Button buttonDate;
     private ArrayAdapter <String> adapter ;
     private Typeface mTypeface;
 
+    public static final String DATE_DASH_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,52 +57,95 @@ public class DetailsGare extends AppCompatActivity {
         //getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));;
         title_txt = (TextView) findViewById(R.id.title_txt);
         list_nature =(ListView) findViewById(R.id.list_nature);
+        textDate = (TextView) findViewById(R.id.textDate);
+        buttonDate = (Button) findViewById(R.id.buttonDate);
 
         String title = getIntent().getStringExtra("gare");
-        Log.e("TITLE", "gare : "+title);
         title_txt.setText(title);
 
-        //REQUETTE HTTP
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = String.format(Constant.URL, modifyTextCity());
-        String url2 = Constant.URL.replace("%s", modifyTextCity());
-
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String json) {
-                        Log.e("volley", "onResponse: " + json);
-                        parseJson(json);
-                    }
-                }, new Response.ErrorListener() {
+        //Generation du calendrier.
+        buttonDate.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("volley", "onErrorResponse" + error);
-
-                String json = new String(error.networkResponse.data);
-                parseJson(json);
+            public void onClick (View v){
+                DialogFragment datePicker = new com.ynov.findme.DatePicker();
+                datePicker.show(getSupportFragmentManager(), "date picker");
             }
         });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
     }
 
+    @Override
+    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+
+        String currentDateString = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.getTime());
+        String currentDateFullString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        textDate.setText(currentDateFullString);
+
+        //convert the date (dd/mm/yyyy) to (yyyy-mm-dd)
+        Log.e(" 0 Date String ", "DATA FIELD: " + currentDateString);
+        try {
+            Date date = new SimpleDateFormat( DATE_FORMAT , Locale.ENGLISH ).parse(currentDateString);
+            DateFormat formatter = new SimpleDateFormat( DATE_DASH_FORMAT , Locale.getDefault() );
+            String trueDate = formatter.format( date.getTime() );
+            Log.e(" 2 Date String ", " - TRUE DATE: " + trueDate);
+
+            title_txt.getText();
+            Log.e("Title", "IT'S : " +  title_txt.getText());
+
+            // HTTP REQUEST
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = String.format(Constant.URL3, modifyTextCity(),trueDate);
+            //String url2 = Constant.URL.replace("%s", modifyTextCity());
+
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String json) {
+                            Log.e("volley", "onResponse: " + json);
+                            parseJsonDate(json);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("volley", "onErrorResponse" + error);
+
+                    String json = new String(error.networkResponse.data);
+                    parseJsonDate(json);
+                }
+            });
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+        }
+        catch( ParseException e ) {
+            e.printStackTrace();
+        }
+    }
+
+    /* TO REPLACE ESPACE BY "+"  TO HTTP REQUEST in THE GARE NAME */
     public String modifyTextCity () {
         String text = title_txt.getText().toString();
         text = text.replace(" ", "+");
         return text;
     }
 
-    private void parseJson(String json) {
+    private void parseJsonDate(String json) {
         //Regeneration de la list  après chaque submit
         List<String> stringList = new ArrayList<>();
         //Liaison de GSON vers le modele: ApiObjects.
         ApiObject api = new Gson().fromJson(json, ApiObject.class);
         //remplissage de la liste en fonction du nombre de lignes
-        for (int i = 0; i < api.getParameters().getRows(); i++) {
-            stringList.add("n°"+ i + ":   " + api.getRecords().get(i).getFields().getGc_obo_nature_c() );
+        for (int i = 0; i < api.getNhits(); i++) {
+            stringList.add(" "+ (i+1) + ":   " + api.getRecords().get(i).getFields().getGc_obo_nature_c() );
         }
+
+        // String myDate = (String)textDate.getText();
+        // Log.e(" - Date String ", " - DATA FIELD: " + myDate);
 
         adapter = new  ArrayAdapter<String>( DetailsGare.this,android.R.layout.simple_list_item_1, stringList) {
             @Override

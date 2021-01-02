@@ -5,35 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient3"
+    android:background="#121853"
     android:orientation="vertical"
     tools:context=".MapsActivity">
 
     <include layout="@layout/activity_toolbar" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/white">
-
-        <TextView
-            android:id="@+id/textDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:text="Select Date (MM-DD-YYYY)"
-            android:padding="9dp"/>
-
-        <Button
-            android:id="@+id/buttonDate"
-            android:layout_marginStart="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="date"/>
-    </LinearLayout>
-
 
     <fragment
         android:id="@+id/map"

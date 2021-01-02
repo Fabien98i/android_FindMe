@@ -1,6 +1,5 @@
 package com.ynov.findme;
 
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Address;
@@ -9,10 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,16 +21,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.ynov.findme.models.Gares;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, DatePickerDialog.OnDateSetListener{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     //Google map
     GoogleMap mMap;
     //Toolbar
@@ -49,10 +39,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // initialisation du marker
     private Marker myMarker;
 
-    //dates :
-    TextView textDate;
-    Button buttonDate;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +46,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //TOOLBAR
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar(toolbar);
-        buttonDate = (Button) findViewById(R.id.buttonDate);
-        //Generation du calendrier.
-        buttonDate.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick (View v){
-                DialogFragment datePicker = new com.ynov.findme.DatePicker();
-                datePicker.show(getSupportFragmentManager(), "date picker");
-            }
-        });
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -79,24 +56,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 android.R.color.transparent
         );
     }
-
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        textDate = (TextView) findViewById(R.id.textDate);
-
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_YEAR, dayOfMonth);
-
-        String currentDateString = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.getTime());
-        String currentDateFullString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-        textDate.setText(currentDateFullString);
-        Log.e("Date String ", "DATA FIELD: " + currentDateString);
-        Log.e("Date Full String", "FULL: " + currentDateFullString);
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -134,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         List<Gares> listeGares = new ArrayList<>();
         listeGares.add(new Gares("Calais Ville"));
         listeGares.add(new Gares("Paris Gare du Nord"));
-        listeGares.add(new Gares("Gare Paris Saint-Lazare"));
+        listeGares.add(new Gares("Paris Saint-Lazare"));
         listeGares.add(new Gares("Strasbourg"));
         listeGares.add(new Gares("Bordeaux Saint-Jean"));
         listeGares.add(new Gares("Paris Est"));

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient3"
+    android:background="#121853"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -21,6 +21,7 @@
         android:layout_gravity="center"
         android:text="By Antony FABIEN"
         android:textSize="15sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
 
 </LinearLayout>
