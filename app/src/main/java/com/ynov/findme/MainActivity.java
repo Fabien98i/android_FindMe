@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent myIntent = new Intent (MainActivity.this, SearchType.class);
+                Intent myIntent = new Intent (MainActivity.this, OtherActivity.class);
                 startActivity(myIntent);
                 finish();
             }

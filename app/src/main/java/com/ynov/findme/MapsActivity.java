@@ -65,6 +65,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startActivity(list_gare);
             return true;
         }
+
+        if(id == R.id.action_info) {
+            Intent list_gare = new Intent(MapsActivity.this, OtherActivity.class);
+            startActivity(list_gare);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

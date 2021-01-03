@@ -1,6 +1,24 @@
 <resources>
     <string name="app_name">FindMe</string>
+
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_search">Search</string>
+    <string name="title_activity_other">Infos</string>
+
+    <string name="button_objet_perdu">Declaration de perte</string>
+
+    <string name="text_objet_perdu">
+            Réalisez dès à présent votre déclaration de perte en ligne.
+        Vous pouvez aussi faire votre déclaration auprès de l’un de nos bureaux Objets Trouvés en gare.
+        Les recherches démarreront aussitôt.</string>
+
+    <string name="question_objet_trouve"> Vous avez trouvé un objet ?</string>
+
+    <string name="text_objet_trouve">
+        Si vous trouvez un objet en gare ou dans un train, n’hésitez pas à le déposer dans l’un de nos bureaux Objets Trouvés ou auprès du personnel en gare.
+        L’objet sera ainsi enregistré dans la base informatique des objets trouvés, ce qui donnera toutes les chances à son propriétaire de le retrouver.
+    </string>
+
     <string name="ok">Ok</string>
     <string name="cancel">Annuler</string>
     <string-array name="rows_array">

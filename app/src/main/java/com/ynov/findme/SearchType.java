@@ -100,6 +100,7 @@ public class  SearchType extends AppCompatActivity implements DatePickerDialog.O
 
         //convert the date (dd/mm/yyyy) to (yyyy-mm-dd)
         Log.e(" 0 Date String ", "DATA FIELD: " + currentDateString);
+
         try {
             Date date = new SimpleDateFormat( DATE_FORMAT , Locale.ENGLISH ).parse(currentDateString);
             DateFormat formatter = new SimpleDateFormat( DATE_DASH_FORMAT , Locale.getDefault() );
@@ -141,11 +142,19 @@ public class  SearchType extends AppCompatActivity implements DatePickerDialog.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if(id == R.id.action_map) {
             Intent map_gare = new Intent(SearchType.this, MapsActivity.class);
             startActivity(map_gare);
             return true;
         }
+
+        if(id == R.id.action_info) {
+            Intent list_gare = new Intent(SearchType.this, OtherActivity.class);
+            startActivity(list_gare);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
