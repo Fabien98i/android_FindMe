@@ -7,30 +7,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#CDCDCD"
-    tools:context=".SearchType">
+    tools:context=".SearchObjectActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#024D8E"
+        android:background="#17286A"
         android:padding="10dp">
 
-        <EditText
-            android:id="@+id/editTextCity"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:hint="Saisir une ville ou un nom de gare"
-            android:padding="9dp"/>
+        <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#024D8E"
+        android:background="#17286A"
         android:padding="4dp">
 
         <TextView

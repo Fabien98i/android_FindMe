@@ -33,9 +33,8 @@ public class OtherActivity extends AppCompatActivity {
         textObjTrouve = (TextView) findViewById(R.id.textObjTrouve);
         //buttonWebSncf = (Button) findViewById(R.id.buttonWebSncf);
         imageViewObjetTrouve = (ImageView) findViewById(R.id.imageViewObjetTrouve);
-
-
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

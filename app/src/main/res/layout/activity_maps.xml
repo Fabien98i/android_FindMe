@@ -10,6 +10,28 @@
     tools:context=".MapsActivity">
 
     <include layout="@layout/activity_toolbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <AutoCompleteTextView
+            android:id="@+id/selectGare"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:hint="Selectionner une gare "
+            android:completionHint="Selectionner une gare"
+            android:completionThreshold="1"
+            android:layout_margin="10dp"/>
+        <Button
+            android:onClick="submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rechercher"/>
+
+    </LinearLayout>
 
     <fragment
         android:id="@+id/map"

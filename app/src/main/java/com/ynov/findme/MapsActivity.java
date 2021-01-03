@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.SearchView;
 import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,6 +24,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ynov.findme.models.Gares;
+import com.ynov.findme.utils.FastDialog;
+import com.ynov.findme.utils.Network;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,11 +33,9 @@ import java.util.List;
 import androidx.fragment.app.FragmentActivity;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-    //Google map
     GoogleMap mMap;
-    //Toolbar
     Toolbar toolbar;
-    List<String> stringList = new ArrayList<>();
+    AutoCompleteTextView selectGare;
 
     // Dialog de rechargement
     private final String LOG = "MapsActivity";
@@ -39,22 +44,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // initialisation du marker
     private Marker myMarker;
 
+    List <Gares> listeGares = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        //TOOLBAR
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        selectGare = (AutoCompleteTextView) findViewById(R.id.selectGare);
         setActionBar(toolbar);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        // Page de rechargement  : Progress Dialog
         progressDialog = new ProgressDialog(MapsActivity.this);
         progressDialog.show();
         progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(
-                android.R.color.transparent
-        );
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        String [] gares = getResources().getStringArray(R.array.gares);
+
+        for (int j=0; j < gares.length; j++){
+            listeGares.add(new Gares(gares[j]));
+        }
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, gares);
+        selectGare.setAdapter(adapter);
+        Log.e("Adapteur","Gares 0 :  +++ " + gares[0]+ "<----");
+        Log.e("Adapteur","Gares 1 :  +++ " + gares[1] + "<----");
+        Log.e("Adapteur","Gares 2 :  +++ " + gares[2]+ "<----");
+        Log.e("Adapteur","Gares 3 :  +++ " + gares[3] + "<----");
+        selectGare.setThreshold(1);
+
     }
 
     @Override
@@ -81,15 +105,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -97,83 +112,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         List <Address> gareList = null;
 
-        List<Gares> listeGares = new ArrayList<>();
-        listeGares.add(new Gares("Calais Ville"));
-        listeGares.add(new Gares("Paris Gare du Nord"));
-        listeGares.add(new Gares("Paris Saint-Lazare"));
-        listeGares.add(new Gares("Strasbourg"));
-        listeGares.add(new Gares("Bordeaux Saint-Jean"));
-        listeGares.add(new Gares("Paris Est"));
-        listeGares.add(new Gares("Lille Europe"));
-        listeGares.add(new Gares("Lyon Part Dieu"));
-        listeGares.add(new Gares("Lyon Perrache"));
-        listeGares.add(new Gares("Marseille Saint-Charles"));
-        listeGares.add(new Gares("Nice"));
-        listeGares.add(new Gares("Montpellier Saint-Roch"));
-        listeGares.add(new Gares("Rennes"));
-        listeGares.add(new Gares("Paris Montparnasse"));
-        listeGares.add(new Gares("Nantes"));
-        listeGares.add(new Gares(" Paris Austerlitz"));
-        listeGares.add(new Gares("Toulouse Matabiau"));
-        listeGares.add(new Gares("Metz Ville"));
-        listeGares.add(new Gares("Dijon"));
-        listeGares.add(new Gares("Orléans"));
-        listeGares.add(new Gares("Tours" ));
-        listeGares.add(new Gares("Nancy"));
-        listeGares.add(new Gares("Caen"));
-        listeGares.add(new Gares("Mulhouse" ));
-        listeGares.add(new Gares("Avignon TGV" ));
-        listeGares.add(new Gares("Poitiers" ));
-        listeGares.add(new Gares("La Rochelle" ));
-        listeGares.add(new Gares( "Amiens" ));
-        listeGares.add(new Gares( "Grenoble" ));
-        listeGares.add(new Gares( "Quimper" ));
-        listeGares.add(new Gares( "Cannes" ));
-        listeGares.add(new Gares( "Colmar"));
-        listeGares.add(new Gares("Toulon" ));
-        listeGares.add(new Gares("Hendaye"));
-        listeGares.add(new Gares("Bellegarde"));
-        listeGares.add(new Gares("Saint-Pierre-des-Corps"));
-        listeGares.add(new Gares("Brest"));
-        listeGares.add(new Gares("Annecy"));
-        listeGares.add(new Gares("Perpignan"));
-        listeGares.add(new Gares("Aix-en-Provence TGV"));
-        listeGares.add(new Gares("Besançon Viotte"));
-        listeGares.add(new Gares("Aéroport Charles de Gaulle 2 TGV"));
-        listeGares.add(new Gares("Reims"));
-        listeGares.add(new Gares("Les Aubrais"));
-        listeGares.add(new Gares("Valence"));
-        listeGares.add(new Gares("Paris Bercy"));
-        listeGares.add(new Gares("Creil"));
-        listeGares.add(new Gares("Nevers"));
-        listeGares.add(new Gares("Mantes-la-Jolie"));
-        listeGares.add(new Gares("Massy TGV"));
-        listeGares.add(new Gares("Le Havre"));
-        listeGares.add(new Gares("Marne-la-Vallée Chessy"));
-        listeGares.add(new Gares("Dunkerque"));
-        listeGares.add(new Gares("Saint-Nazaire"));
-        listeGares.add(new Gares("Compiègne"));
-        listeGares.add(new Gares("Châteauroux"));
-        listeGares.add(new Gares("Le Croisic"));
-        listeGares.add(new Gares("Valenciennes"));
-        listeGares.add(new Gares("Chartres"));
-        listeGares.add(new Gares("Vannes"));
-        listeGares.add(new Gares("Lisieux"));
-        listeGares.add(new Gares("Roanne"));
-        listeGares.add(new Gares("Saverne"));
-        listeGares.add(new Gares("Granville"));
-        listeGares.add(new Gares("Saintes"));
-        listeGares.add(new Gares("Carcassonne"));
-        listeGares.add(new Gares("Paris Gare de Lyon"));
 
+        //pour tout les Gares faire:
         for (int i=0 ; i <listeGares.size(); i++){
             Geocoder geocoder = new Geocoder(MapsActivity.this);
             try {
+                //renvoyer la recherche sur la map
                 gareList = geocoder.getFromLocationName(listeGares.get(i).getName(), 1);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
-
+            //recuperer cette recherche et le mettre dans une variable
             Address address = gareList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             myMarker = mMap.addMarker(new MarkerOptions()
@@ -196,7 +146,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+    public void submit (View view) {
+        GoogleMap googleMap;
+        List <Address> gareList = null;
+        if (selectGare.getText().toString().isEmpty()) {
+            FastDialog.showDialog(MapsActivity.this,
+                    FastDialog.SIMPLE_DIALOG, "Vous devez renseigner un nom de gare");
+            return;
+        }
+
+        if (!Network.isNetworkAvailable(MapsActivity.this)) {
+            FastDialog.showDialog(MapsActivity.this,
+                    FastDialog.SIMPLE_DIALOG,
+                    "Vous devez etre connecté");
+            return;
+        }
+        String mySearch = selectGare.getText().toString();
+        Log.e("My Search",":  it is : " + mySearch + "<----");
+        Geocoder geocoder = new Geocoder(MapsActivity.this);
+        try {
+            //renvoyer la recherche sur la map
+            gareList = geocoder.getFromLocationName(mySearch, 1);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        //recuperer cette recherche et le mettre dans une variable
+        Address address = gareList.get(0);
+        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*

@@ -21,13 +21,74 @@
 
     <string name="ok">Ok</string>
     <string name="cancel">Annuler</string>
-    <string-array name="rows_array">
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>25</item>
-        <item>30</item>
-        <item>35</item>
-        <item>40</item>
+
+    <string-array name="gares">
+        <item>Paris Gare de Lyon</item>
+        <item>Carcassonne</item>
+        <item>Saintes</item>
+        <item>Granville</item>
+        <item>Saverne</item>
+        <item>Roanne</item>
+        <item>Lisieux</item>
+        <item>Vannes</item>
+        <item>Chartres</item>
+        <item>Valenciennes</item>
+        <item>Le Croisic</item>
+        <item>Châteauroux</item>
+        <item>Compiègne</item>
+        <item>Saint-Nazaire</item>
+        <item>Dunkerque</item>
+        <item>Marne-la-Vallée Chessy</item>
+        <item>Le Havre</item>
+        <item>Massy TGV</item>
+        <item>Mantes-la-Jolie</item>
+        <item>Nevers</item>
+        <item>Creil</item>
+        <item>Paris Bercy</item>
+        <item>Valence</item>
+        <item>Les Aubrais</item>
+        <item>Reims</item>
+        <item>Aéroport Charles de Gaulle 2 TGV</item>
+        <item>Besançon Viotte</item>
+        <item>Aix-en-Provence TGV</item>
+        <item>Perpignan</item>
+        <item>Annecy</item>
+        <item>Brest</item>
+        <item>Saint-Pierre-des-Corps</item>
+        <item>Bellegarde</item>
+        <item>Hendaye</item>
+        <item>Toulon</item>
+        <item>Colmar</item>
+        <item>Cannes</item>
+        <item>Quimper</item>
+        <item>Grenoble</item>
+        <item>Amiens</item>
+        <item>La Rochelle</item>
+        <item>Poitiers</item>
+        <item>Avignon TGV</item>
+        <item>Mulhouse</item>
+        <item>Caen</item>
+        <item>Nancy</item>
+        <item>Tours</item>
+        <item>Orléans</item>
+        <item>Dijon</item>
+        <item>Metz Ville</item>
+        <item>Toulouse Matabiau</item>
+        <item>Paris Austerlitz</item>
+        <item>Nantes</item>
+        <item>Paris Montparnasse</item>
+        <item>Rennes</item>
+        <item>Montpellier Saint-Roch</item>
+        <item>Nice</item>
+        <item>Marseille Saint-Charles</item>
+        <item>Lyon Perrache</item>
+        <item>Lyon Part Dieu</item>
+        <item>Lille Europe</item>
+        <item>Paris Est</item>
+        <item>Bordeaux Saint-Jean</item>
+        <item>Strasbourg</item>
+        <item>Paris Saint-Lazare</item>
+        <item>"Calais Ville</item>
+        <item>Paris Gare du Nord</item>
     </string-array>
 </resources>

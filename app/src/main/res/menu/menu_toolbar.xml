@@ -6,20 +6,15 @@
     <item
         android:id="@+id/action_map"
         android:title="Carte"
-        app:showAsAction="never"/>
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_map" />
 
     <item
         android:id="@+id/action_list"
-        android:title="Liste"/>
+        android:title="Rechercher une gare"/>
 
     <item
         android:id="@+id/action_info"
         android:title="Déclarer une perte"/>
-
-    <item
-        android:id="@+id/action_favorite"
-        android:title="Favorites"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_action_name"/>
 
 </menu>
