@@ -40,8 +40,8 @@ import androidx.fragment.app.DialogFragment;
 
 
 public class DetailsGare extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    TextView title_txt;
-    ListView list_nature;
+    TextView textTitle;
+    ListView listNature;
     TextView textDate;
     Button buttonDate;
     private ArrayAdapter <String> adapter ;
@@ -53,15 +53,15 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_nature);
+        setContentView(R.layout.details_gare);
         //getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));;
-        title_txt = (TextView) findViewById(R.id.title_txt);
-        list_nature =(ListView) findViewById(R.id.list_nature);
+        textTitle = (TextView) findViewById(R.id.textTitle);
+        listNature =(ListView) findViewById(R.id.listNature);
         textDate = (TextView) findViewById(R.id.textDate);
         buttonDate = (Button) findViewById(R.id.buttonDate);
 
         String title = getIntent().getStringExtra("gare");
-        title_txt.setText(title);
+        textTitle.setText(title);
 
         //Generation du calendrier.
         buttonDate.setOnClickListener(new View.OnClickListener(){
@@ -95,8 +95,8 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
             String trueDate = formatter.format( date.getTime() );
             Log.e(" 2 Date String ", " - TRUE DATE: " + trueDate);
 
-            title_txt.getText();
-            Log.e("Title", "IT'S : " +  title_txt.getText());
+            textTitle.getText();
+            Log.e("Title", "IT'S : " +  textTitle.getText());
 
             // HTTP REQUEST
             RequestQueue queue = Volley.newRequestQueue(this);
@@ -129,7 +129,7 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
 
     /* TO REPLACE ESPACE BY "+"  TO HTTP REQUEST in THE GARE NAME */
     public String modifyTextCity () {
-        String text = title_txt.getText().toString();
+        String text = textTitle.getText().toString();
         text = text.replace(" ", "+");
         return text;
     }
@@ -165,9 +165,9 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
             }
 
         };
-        list_nature.setAdapter(adapter);
+        listNature.setAdapter(adapter);
 
-        list_nature.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listNature.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder adb = new AlertDialog.Builder(DetailsGare.this);

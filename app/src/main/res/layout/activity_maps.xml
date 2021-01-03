@@ -5,31 +5,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121853"
+    android:background="#011942"
     android:orientation="vertical"
     tools:context=".MapsActivity">
 
     <include layout="@layout/activity_toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_gravity="center">
 
         <AutoCompleteTextView
             android:id="@+id/selectGare"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:hint="Selectionner une gare "
-            android:completionHint="Selectionner une gare"
+            android:hint="Selectionner une gare ... "
             android:completionThreshold="1"
-            android:layout_margin="10dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"/>
+
         <Button
             android:onClick="submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rechercher"/>
+            android:layout_margin="2dp"
+            android:text="ok"/>
 
     </LinearLayout>
 

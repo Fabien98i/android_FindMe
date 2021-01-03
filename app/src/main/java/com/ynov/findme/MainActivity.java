@@ -21,16 +21,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-            myTimer = new Timer();
-            myTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Intent myIntent = new Intent (MainActivity.this, MapsActivity.class);
-                    startActivity(myIntent);
-                    finish();
-                }
-            }, 2000); */
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

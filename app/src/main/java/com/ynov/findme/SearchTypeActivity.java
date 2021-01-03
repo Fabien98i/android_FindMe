@@ -33,8 +33,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.ynov.findme.models.ApiObject;
 import com.ynov.findme.utils.Constant;
-import com.ynov.findme.utils.FastDialog;
-import com.ynov.findme.utils.Network;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -48,7 +46,7 @@ import java.util.Locale;
 import android.util.TypedValue;
 
 
-public class  SearchType extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class  SearchTypeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     private EditText editTextCity;
     private ListView listViewType;
@@ -110,13 +108,13 @@ public class  SearchType extends AppCompatActivity implements DatePickerDialog.O
         int id = item.getItemId();
 
         if(id == R.id.action_map) {
-            Intent map_gare = new Intent(SearchType.this, MapsActivity.class);
+            Intent map_gare = new Intent(SearchTypeActivity.this, MapsActivity.class);
             startActivity(map_gare);
             return true;
         }
 
         if(id == R.id.action_info) {
-            Intent list_gare = new Intent(SearchType.this, OtherActivity.class);
+            Intent list_gare = new Intent(SearchTypeActivity.this, OtherActivity.class);
             startActivity(list_gare);
             return true;
         }
@@ -160,7 +158,7 @@ public class  SearchType extends AppCompatActivity implements DatePickerDialog.O
             Date date = new SimpleDateFormat( DATE_FORMAT , Locale.ENGLISH ).parse(currentDateString);
             DateFormat formatter = new SimpleDateFormat( DATE_DASH_FORMAT , Locale.getDefault() );
             String trueDate = formatter.format( date.getTime() );
-            Log.e(" 2 Date String ", " - TRUE DATE: " + trueDate);
+            //Log.e(" 2 Date String ", " - TRUE DATE: " + trueDate);
 
             editTextCity.getText();
             //Log.e("Title", "IT'S : " +  editTextCity.getText());
@@ -175,7 +173,7 @@ public class  SearchType extends AppCompatActivity implements DatePickerDialog.O
                         @Override
                         public void onResponse(String json) {
                             Log.e("volley", "onResponse: " + json);
-                            parseJsonDate(json);
+                            parseJsonDate(json, trueDate);
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -183,7 +181,7 @@ public class  SearchType extends AppCompatActivity implements DatePickerDialog.O
                     Log.e("volley", "onErrorResponse" + error);
 
                     String json = new String(error.networkResponse.data);
-                    parseJsonDate(json);
+                    parseJsonDate(json, trueDate);
                 }
             });
             // Add the request to the RequestQueue.
@@ -195,7 +193,8 @@ public class  SearchType extends AppCompatActivity implements DatePickerDialog.O
     }
 
     // lecture JSON
-    private void parseJsonDate(String json) {
+    private void parseJsonDate(String json, String trueDate) {
+        String currentDate = trueDate;
         //Regeneration de la list  après chaque submit
         List<String> stringList = new ArrayList<>();
         //Liaison de GSON vers le modele: ApiObjects.
@@ -219,33 +218,34 @@ public class  SearchType extends AppCompatActivity implements DatePickerDialog.O
         // String myDate = (String)textDate.getText();
         // Log.e(" - Date String ", " - DATA FIELD: " + myDate);
         adapter = new  ArrayAdapter<String>
-                ( SearchType.this,android.R.layout.simple_list_item_1, stringList) {
-                @Override
-                public View getView (int position, View convertView, ViewGroup parent){
-                    // Cast the list view each item as text view
-                    TextView item = (TextView) super.getView (position,convertView,parent);
-                    // Set the typeface/font for the current item
-                    item.setTypeface(mTypeface);
-                    // Set the list view item's text color
-                    item.setTextColor(Color.parseColor("#160A67"));
-                    // Set the item text style to bold
-                    item.setTypeface(item.getTypeface(), Typeface.BOLD);
-                    // Change the item text size
-                    item.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
-                    // return the view
-                    return item;
-                }
+                ( SearchTypeActivity.this,android.R.layout.simple_list_item_1, stringList) {
+            @Override
+            public View getView (int position, View convertView, ViewGroup parent){
+                // Cast the list view each item as text view
+                TextView item = (TextView) super.getView (position,convertView,parent);
+                // Set the typeface/font for the current item
+                item.setTypeface(mTypeface);
+                // Set the list view item's text color
+                item.setTextColor(Color.parseColor("#160A67"));
+                // Set the item text style to bold
+                item.setTypeface(item.getTypeface(), Typeface.BOLD);
+                // Change the item text size
+                item.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
+                // return the view
+                return item;
+            }
         };
         listViewType.setAdapter(adapter);
 
         listViewType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AlertDialog.Builder adb = new AlertDialog.Builder(SearchType.this);
-                adb.setTitle("Nature de la perte : " + api.getRecords().get(position).getFields().getGc_obo_nature_c());
-                adb.setMessage( " - Type d'objet : " + api.getRecords().get(position).getFields().getGc_obo_type_c() +
-                        "\n - A la date du "+ api.getRecords().get(position).getFields().getDate() +
-                        "\n - Localisation "+ api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name());
+
+                AlertDialog.Builder adb = new AlertDialog.Builder(SearchTypeActivity.this);
+                adb.setTitle("Nature de la perte:  " + api.getRecords().get(position).getFields().getGc_obo_nature_c());
+                adb.setMessage( "\n - Type d'objet:  " + api.getRecords().get(position).getFields().getGc_obo_type_c() +
+                        "\n - A la date du:  "       + currentDate +
+                        "\n - Localisation:  "       + api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name());
                 //on indique que l'on veut le bouton ok à notre boite de dialogue
                 adb.setPositiveButton("Ok", null);
                 //on affiche la boite de dialogue

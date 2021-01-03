@@ -24,7 +24,7 @@
         <item name="android:navigationBarColor"> #011942 </item>
 
         <!-- reglage de la transparence -->
-        <item name="android:background">#00000000</item> <!-- Or any transparency or color you need -->
+        <item name="android:background">#00000000</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>

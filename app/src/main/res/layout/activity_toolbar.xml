@@ -7,12 +7,11 @@
     tools:context=".ToolbarActivity"
     android:id="@+id/toolbar"
     android:background="#011942"
-    android:titleTextColor="@color/white"
->
+    android:titleTextColor="@color/white">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="110dp"
+        android:layout_height="60dp"
         android:src="@drawable/logo_loupe2"
         android:layout_gravity="center"
         android:layout_marginTop="7dp" />

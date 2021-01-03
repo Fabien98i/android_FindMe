@@ -33,19 +33,16 @@ import java.util.List;
 import androidx.fragment.app.FragmentActivity;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-    GoogleMap mMap;
-    Toolbar toolbar;
-    AutoCompleteTextView selectGare;
+    private GoogleMap mMap;
+    private Toolbar toolbar;
+    private AutoCompleteTextView selectGare;
 
-    // Dialog de rechargement
-    private final String LOG = "MapsActivity";
+    // Dialog de rechargement de la page
     private static ProgressDialog progressDialog;
 
     // initialisation du marker
     private Marker myMarker;
-
-    List <Gares> listeGares = new ArrayList<>();
-
+    private List <Gares> listeGares = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         progressDialog.setContentView(R.layout.progress_dialog);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+        //je recupère les noms de gares declarés dans les ressources
         String [] gares = getResources().getStringArray(R.array.gares);
 
         for (int j=0; j < gares.length; j++){
@@ -73,29 +71,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, gares);
         selectGare.setAdapter(adapter);
-        Log.e("Adapteur","Gares 0 :  +++ " + gares[0]+ "<----");
-        Log.e("Adapteur","Gares 1 :  +++ " + gares[1] + "<----");
-        Log.e("Adapteur","Gares 2 :  +++ " + gares[2]+ "<----");
-        Log.e("Adapteur","Gares 3 :  +++ " + gares[3] + "<----");
         selectGare.setThreshold(1);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_list) {
-            Intent list_gare = new Intent(MapsActivity.this, SearchType.class);
+            Intent list_gare = new Intent(MapsActivity.this, SearchTypeActivity.class);
             startActivity(list_gare);
             return true;
         }
-
         if(id == R.id.action_info) {
             Intent list_gare = new Intent(MapsActivity.this, OtherActivity.class);
             startActivity(list_gare);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -108,12 +99,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
         List <Address> gareList = null;
 
-
-        //pour tout les Gares faire:
+        //pour toutes les Gares faire:
         for (int i=0 ; i <listeGares.size(); i++){
             Geocoder geocoder = new Geocoder(MapsActivity.this);
             try {
@@ -137,7 +126,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
                 String markertitle = marker.getTitle();
-                    Log.e("TITLE marker ", "Name gare : "+ markertitle);
+                    //Log.e("TITLE marker ", "Name gare : "+ markertitle);
                     Intent i = new Intent(MapsActivity.this, DetailsGare.class);
                     i.putExtra("gare", markertitle);
                     startActivity(i);
@@ -163,7 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         String mySearch = selectGare.getText().toString();
-        Log.e("My Search",":  it is : " + mySearch + "<----");
+        //Log.e("My Search",":  it is : " + mySearch + "<----");
         Geocoder geocoder = new Geocoder(MapsActivity.this);
         try {
             //renvoyer la recherche sur la map
@@ -175,6 +164,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //recuperer cette recherche et le mettre dans une variable
         Address address = gareList.get(0);
         LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+        //je zoom sur la gare en question
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 }

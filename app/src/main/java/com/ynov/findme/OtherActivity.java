@@ -39,7 +39,7 @@ public class OtherActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_list) {
-            Intent list_gare = new Intent(OtherActivity.this, SearchType.class);
+            Intent list_gare = new Intent(OtherActivity.this, SearchTypeActivity.class);
             startActivity(list_gare);
             return true;
         }
