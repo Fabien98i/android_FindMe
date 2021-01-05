@@ -2,10 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ynov.findme">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_logo_findme"
-        android:roundIcon="@mipmap/ic_logo_findme"
+
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.FindMe">
@@ -17,9 +19,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".ToolbarActivity" />
+        <activity android:name=".HomeActivity" />
         <activity
             android:name=".SearchTypeActivity"
             android:label="@string/title_activity_search" />
+        <activity
+            android:name=".SearchObjectActivity"
+            android:label="@string/title_activity_search_object" />
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
@@ -40,10 +46,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <activity android:name=".SelectObjectActivity"/>
+        <activity android:name=".MapTrackActivity" />
     </application>
-    <!-- All permissions: LOCATION AND INTERNET -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 
 </manifest>

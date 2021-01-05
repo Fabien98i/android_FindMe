@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.widget.Toolbar;
 
 public class ToolbarActivity extends AppCompatActivity {
-    Toolbar toolbar;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

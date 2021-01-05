@@ -19,7 +19,6 @@ public class OtherActivity extends AppCompatActivity {
     TextView textObjtPerdu;
     TextView questionObjTrouve;
     TextView textObjTrouve;
-    //Button buttonWebSncf;
     ImageView imageViewObjetTrouve;
     Toolbar toolbar;
 
@@ -31,25 +30,27 @@ public class OtherActivity extends AppCompatActivity {
         textObjtPerdu = (TextView) findViewById(R.id.textObjtPerdu);
         questionObjTrouve = (TextView) findViewById(R.id.questionObjTrouve);
         textObjTrouve = (TextView) findViewById(R.id.textObjTrouve);
-        //buttonWebSncf = (Button) findViewById(R.id.buttonWebSncf);
         imageViewObjetTrouve = (ImageView) findViewById(R.id.imageViewObjetTrouve);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_list) {
-            Intent list_gare = new Intent(OtherActivity.this, SearchTypeActivity.class);
-            startActivity(list_gare);
+        if(id == R.id.action_home) {
+            Intent intentList = new Intent(OtherActivity.this, HomeActivity.class);
+            startActivity(intentList);
             return true;
         }
-
         if(id == R.id.action_map) {
-            Intent list_gare = new Intent(OtherActivity.this, MapsActivity.class);
-            startActivity(list_gare);
+            Intent intentMap = new Intent(OtherActivity.this, MapsActivity.class);
+            startActivity(intentMap);
             return true;
         }
-
+        if(id == R.id.action_objet) {
+            Intent intentObjet = new Intent(OtherActivity.this, SelectObjectActivity.class);
+            startActivity(intentObjet);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -1,4 +1,3 @@
-
 package com.ynov.findme;
 
 import androidx.appcompat.app.AlertDialog;
@@ -7,6 +6,7 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,34 +42,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import android.util.TypedValue;
-
-
-public class  SearchTypeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class SearchObjectActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     private EditText editTextCity;
     private ListView listViewType;
+    //Création de la ArrayList qui nous permettra de remplir la listView
+    //private List<String> stringList = new ArrayList<>();
+
     //Declaration de l'adaptateur
-    private ArrayAdapter <String> adapter ;
-    //Declaration des formats des dates
+    private ArrayAdapter<String> adapter ;
+    private Typeface mTypeface;
+
+    //Declaration date
     public static final String DATE_DASH_FORMAT = "yyyy-MM-dd";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     private TextView textDate;
     private Button buttonDate;
-    private String paramsType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_type);
+        setContentView(R.layout.activity_search_object);
 
         editTextCity = (EditText) findViewById(R.id.editTextCity);
         listViewType = (ListView) findViewById(R.id.listViewType);
         textDate = (TextView) findViewById(R.id.textDate);
         buttonDate = (Button) findViewById(R.id.buttonDate);
 
-        //EdithText ecouteurs sur les changements
+        //EdithText
         editTextCity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,10 +79,12 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -99,22 +102,25 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if(id == R.id.action_map) {
-            Intent intentMap = new Intent(SearchTypeActivity.this, MapsActivity.class);
+            Intent intentMap = new Intent(SearchObjectActivity.this, MapsActivity.class);
             startActivity(intentMap);
             return true;
         }
 
         if(id == R.id.action_info) {
-            Intent list_gare = new Intent(SearchTypeActivity.this, OtherActivity.class);
-            startActivity(list_gare);
+            Intent intentOther = new Intent(SearchObjectActivity.this, OtherActivity.class);
+            startActivity(intentOther);
             return true;
         }
-        if(id == R.id.action_objet) {
-            Intent intentObject = new Intent(SearchTypeActivity.this, SelectObjectActivity.class);
-            startActivity(intentObject);
+
+        if(id == R.id.action_home) {
+            Intent intentList = new Intent(SearchObjectActivity.this, HomeActivity.class);
+            startActivity(intentList);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -134,15 +140,12 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
     // Choix Dates
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-        paramsType = getIntent().getStringExtra("type_object");
-        Log.e("PARAMSTYPE:","Value: "+ paramsType);
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
-
         String currentDateString = DateFormat.getDateInstance(DateFormat.DATE_FIELD)
                 .format(c.getTime());
         String currentDateFullString = DateFormat.getDateInstance(DateFormat.FULL)
@@ -160,10 +163,11 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
 
             editTextCity.getText();
             //Log.e("Title", "IT'S : " +  editTextCity.getText());
+
             // HTTP REQUEST
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = String.format
-                    (Constant.URL_SEARCH_TYPE, modifyTextCity(),trueDate,paramsType);
+            String url = String.format(Constant.URL_SEARCH_OBJECT, modifyTextCity(),trueDate);
+            //String url2 = Constant.URL.replace("%s", modifyTextCity());
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {
@@ -194,41 +198,68 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
         String currentDate = trueDate;
         //Regeneration de la list  après chaque submit
         List<String> stringList = new ArrayList<>();
+
         HashMap<String, String> hashmap;
         ArrayList < HashMap<String, String> > listItem = new ArrayList < HashMap <String, String> >();
+
         //Liaison de GSON vers le modele: ApiObjects.
         ApiObject api = new Gson().fromJson(json, ApiObject.class);
         int tailleList = 0;
 
         //getnHits = nombre de resultats de la recherche
         //getRows = nombre de resultats à afficher
-        if(api.getNhits() > api.getParameters().getRows())
-        { tailleList = api.getParameters().getRows(); }
-        else { tailleList = api.getNhits(); }
-
+        if(api.getNhits() > api.getParameters().getRows()){
+            tailleList = api.getParameters().getRows();
+        }
+        else {
+            tailleList = api.getNhits();
+        }
+        hashmap = new HashMap<String, String>();
         //remplissage de la liste en fonction du nombre de lignes
         for (int i = 0; i < tailleList; i++) {
+            //stringList.add(" - Gare :  "       + api.getRecords().get(i).getFields().getGc_obo_gare_origine_r_name() +
+            //        "\n    Date :  "   + api.getRecords().get(i).getFields().getDate());
             hashmap = new HashMap<String,String>();
-            hashmap.put("textViewObjType", api.getRecords().get(i).getFields().getGc_obo_type_c());
-            hashmap.put("textViewObjNature", api.getRecords().get(i).getFields().getGc_obo_nature_c());
-            hashmap.put("textViewObjDate", currentDate);
-
+            hashmap.put("textViewGare", api.getRecords().get(i).getFields().getGc_obo_gare_origine_r_name());
+            hashmap.put("textViewDate", api.getRecords().get(i).getFields().getDate());
             listItem.add(hashmap);
-            Log.e("HASHMAP", "Message +++ " + hashmap.get("textViewObjType"));
+            Log.e("Hasmap", "Name ::: "+ api.getRecords().get(i).getFields().getGc_obo_gare_origine_r_name());
+            Log.e("Hasmap", "NOM DE GARE : : : : : : : : " + hashmap.get("Nom de gare"));
         }
         //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
-        SimpleAdapter adapter = new SimpleAdapter (
-                SearchTypeActivity.this, listItem, R.layout.item_object,
-                new String[] {"textViewObjType", "textViewObjNature", "textViewObjDate"},
-                new int[]    {R.id.textViewObjType, R.id.textViewObjNature, R.id.textViewObjDate}
-                );
+        SimpleAdapter adapter = new SimpleAdapter (SearchObjectActivity.this, listItem, R.layout.item_gare,
+                new String[] {"textViewGare", "textViewDate"}, new int[] {R.id.textViewGare, R.id.textViewDate});
         listViewType.setAdapter(adapter);
-
         listViewType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String nom_de_gare = api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name();
+                Log.e("Position & Gare", "Postion : "+ position + "Gare : " +nom_de_gare);
+               /* if((nom_de_gare != null) || !(nom_de_gare.isEmpty()) ){
+                    Intent intent = new Intent (SearchObjectActivity.this, MapTrackActivity.class);
+                    intent.putExtra("name_location", nom_de_gare);
+                    startActivity(intent);
+                } */
+                try {
+                    Intent intent = new Intent (SearchObjectActivity.this, MapTrackActivity.class);
+                    intent.putExtra("name_location", nom_de_gare);
+                    startActivity(intent);
 
-                AlertDialog.Builder adb = new AlertDialog.Builder(SearchTypeActivity.this);
+                }
+                catch (NullPointerException e){
+                    AlertDialog.Builder adb = new AlertDialog.Builder(SearchObjectActivity.this);
+                    adb.setTitle("Localisation de l'objet indéterminé ");
+                    adb.setMessage("La perte de l'objet n'as pas été signalé dans une gare ");
+                    adb.setPositiveButton("Ok", null);
+                    adb.show();
+                }
+            }
+        });
+
+        listViewType.setOnItemLongClickListener (new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(SearchObjectActivity.this);
                 adb.setTitle("Nature de la perte:  " + api.getRecords().get(position).getFields().getGc_obo_nature_c());
                 adb.setMessage( "\n - Type d'objet:  " + api.getRecords().get(position).getFields().getGc_obo_type_c() +
                         "\n - A la date du:  "       + currentDate +
@@ -237,33 +268,9 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
                 adb.setPositiveButton("Ok", null);
                 //on affiche la boite de dialogue
                 adb.show();
+                return false;
             }
         });
     }
 }
 
-
-
-/*
-*         // String myDate = (String)textDate.getText();
-        // Log.e(" - Date String ", " - DATA FIELD: " + myDate);
-        adapter = new  ArrayAdapter<String>
-                ( SearchTypeActivity.this,android.R.layout.simple_list_item_1, stringList) {
-            @Override
-            public View getView (int position, View convertView, ViewGroup parent){
-                // Cast the list view each item as text view
-                TextView item = (TextView) super.getView (position,convertView,parent);
-                // Set the typeface/font for the current item
-                item.setTypeface(mTypeface);
-                // Set the list view item's text color
-                item.setTextColor(Color.parseColor("#160A67"));
-                // Set the item text style to bold
-                item.setTypeface(item.getTypeface(), Typeface.BOLD);
-                // Change the item text size
-                item.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
-                // return the view
-                return item;
-            }
-        };
-        listViewType.setAdapter(adapter);
- * */

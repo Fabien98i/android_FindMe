@@ -1,6 +1,7 @@
 package com.ynov.findme;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -30,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,13 +43,12 @@ import androidx.fragment.app.DialogFragment;
 
 
 public class DetailsGare extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    TextView textTitle;
-    ListView listNature;
-    TextView textDate;
-    Button buttonDate;
+    private TextView textTitle;
+    private ListView listNature;
+    private TextView textDate;
+    private Button buttonDate;
     private ArrayAdapter <String> adapter ;
-    private Typeface mTypeface;
-
+    //Declaration des formats des dates
     public static final String DATE_DASH_FORMAT = "yyyy-MM-dd";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
@@ -81,34 +83,27 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
-
         String currentDateString = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.getTime());
         String currentDateFullString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
         textDate.setText(currentDateFullString);
 
         //convert the date (dd/mm/yyyy) to (yyyy-mm-dd)
-        Log.e(" 0 Date String ", "DATA FIELD: " + currentDateString);
         try {
             Date date = new SimpleDateFormat( DATE_FORMAT , Locale.ENGLISH ).parse(currentDateString);
             DateFormat formatter = new SimpleDateFormat( DATE_DASH_FORMAT , Locale.getDefault() );
             String trueDate = formatter.format( date.getTime() );
-            Log.e(" 2 Date String ", " - TRUE DATE: " + trueDate);
-
             textTitle.getText();
-            Log.e("Title", "IT'S : " +  textTitle.getText());
 
             // HTTP REQUEST
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = String.format(Constant.URL3, modifyTextCity(),trueDate);
-            //String url2 = Constant.URL.replace("%s", modifyTextCity());
+            String url = String.format(Constant.URL_SEARCH_OBJECT, modifyTextCity(),trueDate);
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String json) {
                             Log.e("volley", "onResponse: " + json);
-                            parseJsonDate(json);
+                            parseJsonDate(json, trueDate);
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -116,7 +111,7 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
                     Log.e("volley", "onErrorResponse" + error);
 
                     String json = new String(error.networkResponse.data);
-                    parseJsonDate(json);
+                    parseJsonDate(json, trueDate);
                 }
             });
             // Add the request to the RequestQueue.
@@ -134,51 +129,61 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
         return text;
     }
 
-    private void parseJsonDate(String json) {
-        //Regeneration de la list  après chaque submit
-        List<String> stringList = new ArrayList<>();
-        //Liaison de GSON vers le modele: ApiObjects.
+    private void parseJsonDate(String json, String trueDate) {
+        String dateModified = trueDate;
+        int tailleList = 0;
+        HashMap<String, String> hashmap;
+        ArrayList < HashMap<String, String> > listItem = new ArrayList < HashMap <String, String> >();
         ApiObject api = new Gson().fromJson(json, ApiObject.class);
+
+        //getnHits = nombre de resultats de la recherche
+        //getRows = nombre de resultats à afficher
+        if(api.getNhits() > api.getParameters().getRows())
+        { tailleList = api.getParameters().getRows(); }
+        else { tailleList = api.getNhits(); }
+
         //remplissage de la liste en fonction du nombre de lignes
-        for (int i = 0; i < api.getNhits(); i++) {
-            stringList.add(" "+ (i+1) + ":   " + api.getRecords().get(i).getFields().getGc_obo_nature_c() );
+        for (int i = 0; i < tailleList; i++) {
+            hashmap = new HashMap<String,String>();
+            hashmap.put("textViewObjType", api.getRecords().get(i).getFields().getGc_obo_type_c());
+            hashmap.put("textViewObjNature", api.getRecords().get(i).getFields().getGc_obo_nature_c());
+            hashmap.put("textViewObjDate", dateModified);
+
+            listItem.add(hashmap);
         }
-
-        // String myDate = (String)textDate.getText();
-        // Log.e(" - Date String ", " - DATA FIELD: " + myDate);
-
-        adapter = new  ArrayAdapter<String>( DetailsGare.this,android.R.layout.simple_list_item_1, stringList) {
-            @Override
-            public View getView (int position, View convertView, ViewGroup parent){
-                // Cast the list view each item as text view
-                TextView item = (TextView) super.getView (position,convertView,parent);
-                // Set the typeface/font for the current item
-                item.setTypeface(mTypeface);
-                // Set the list view item's text color
-                item.setTextColor(Color.parseColor("#160A67"));
-                // Set the item text style to bold
-                item.setTypeface(item.getTypeface(), Typeface.BOLD);
-                // Change the item text size
-                item.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
-                // return the view
-                return item;
-            }
-
-        };
+        //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
+        SimpleAdapter adapter = new SimpleAdapter (
+                DetailsGare.this, listItem, R.layout.item_map_object,
+                new String[] {"textViewObjType", "textViewObjNature", "textViewObjDate"},
+                new int[]    {R.id.textViewObjType, R.id.textViewObjNature, R.id.textViewObjDate}
+        );
         listNature.setAdapter(adapter);
 
         listNature.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AlertDialog.Builder adb = new AlertDialog.Builder(DetailsGare.this);
-                adb.setTitle("Nature de la perte : " + api.getRecords().get(position).getFields().getGc_obo_nature_c());
-                adb.setMessage( " - Type d'objet : " + api.getRecords().get(position).getFields().getGc_obo_type_c() +
-                        "\n - A la date du "+ api.getRecords().get(position).getFields().getDate() +
-                        "\n - Localisation "+ api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name());
-                //on indique que l'on veut le bouton ok à notre boite de dialogue
-                adb.setPositiveButton("Ok", null);
-                //on affiche la boite de dialogue
-                adb.show();
+                String nom_de_gare = api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name();
+                Log.e("Position & Gare", "Postion : "+ position + "Gare : " +nom_de_gare);
+               /* if((nom_de_gare != null) || !(nom_de_gare.isEmpty()) ){
+                    Intent intent = new Intent (SearchObjectActivity.this, MapTrackActivity.class);
+                    intent.putExtra("name_location", nom_de_gare);
+                    startActivity(intent);
+                } */
+                try {
+                    String current_address = getIntent().getStringExtra("currentAdress");
+                    Intent intent = new Intent (DetailsGare.this, MapTrackActivity.class);
+                    intent.putExtra("name_location", nom_de_gare);
+                    intent.putExtra("currentAdresstoItineraire", current_address);
+                    startActivity(intent);
+
+                }
+                catch (NullPointerException e){
+                    AlertDialog.Builder adb = new AlertDialog.Builder(DetailsGare.this);
+                    adb.setTitle("Localisation de l'objet indéterminé ");
+                    adb.setMessage("La perte de l'objet n'as pas été signalé dans une gare ");
+                    adb.setPositiveButton("Ok", null);
+                    adb.show();
+                }
             }
         });
     }

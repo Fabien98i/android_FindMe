@@ -4,17 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
+        android:id="@+id/action_home"
+        android:title="Accueil"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_home"
+        />
+
+    <item
         android:id="@+id/action_map"
         android:title="Carte"
         app:showAsAction="always"
         android:icon="@drawable/ic_action_map" />
 
     <item
-        android:id="@+id/action_list"
-        android:title="Rechercher une gare"/>
+        android:id="@+id/action_objet"
+        android:title="Rechercher un objet"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_object"
+        />
 
     <item
         android:id="@+id/action_info"
         android:title="Déclarer une perte"/>
-
 </menu>

@@ -2,21 +2,35 @@
     <string name="app_name">FindMe</string>
 
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_search">Search</string>
+    <string name="title_activity_search">Search Gare</string>
     <string name="title_activity_other">Infos</string>
+    <string name="title_activity_search_object">Search Object</string>
+    <string name="informations_project">
+            Une application permet de mettre en relation des objets trouvés
+        et des déclarations de perte faites par les clients via le web (gares-sncf.com), par téléphone ou en gare.
+        Ce jeu de données représente une intégralité des déclarations de pertes faites
+        par les clients tout canal confondu (web, téléphone et gare).
+    </string>
+    <string name="presentation">
+            Retracez vos objets perdus dans les gares plus facilement, grace à la localisation et aux traitements de données.
+        Si vous avec perdu un objet, consultez la page de la sncf, rubrique : Déclaration de Pertes.
+    </string>
+    <string name="question">
+            Vous recherchez un objet ?
+    </string>
 
     <string name="button_objet_perdu">Declaration de perte</string>
 
     <string name="text_objet_perdu">
             Réalisez dès à présent votre déclaration de perte en ligne.
-        Vous pouvez aussi faire votre déclaration auprès de l’un de nos bureaux Objets Trouvés en gare.
+        Vous pouvez aussi faire votre déclaration auprès de l\' un de nos bureaux Objets Trouvés en gare.
         Les recherches démarreront aussitôt.</string>
 
     <string name="question_objet_trouve"> Vous avez trouvé un objet ?</string>
 
     <string name="text_objet_trouve">
-        Si vous trouvez un objet en gare ou dans un train, n’hésitez pas à le déposer dans l’un de nos bureaux Objets Trouvés ou auprès du personnel en gare.
-        L’objet sera ainsi enregistré dans la base informatique des objets trouvés, ce qui donnera toutes les chances à son propriétaire de le retrouver.
+        Si vous trouvez un objet en gare ou dans un train, n\’hésitez pas à le déposer dans l’un de nos bureaux Objets Trouvés ou auprès du personnel en gare.
+        L\’objet sera ainsi enregistré dans la base informatique des objets trouvés, ce qui donnera toutes les chances à son propriétaire de le retrouver.
     </string>
 
     <string name="ok">Ok</string>

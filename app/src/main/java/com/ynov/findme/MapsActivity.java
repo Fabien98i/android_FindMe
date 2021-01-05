@@ -4,15 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.SearchView;
 import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,16 +32,21 @@ import java.util.List;
 import androidx.fragment.app.FragmentActivity;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final int PERMS_CALL_ID = 1234;
     private GoogleMap mMap;
     private Toolbar toolbar;
     private AutoCompleteTextView selectGare;
+    private LocationManager lm;
+    private SupportMapFragment mapFragment;
 
     // Dialog de rechargement de la page
     private static ProgressDialog progressDialog;
 
     // initialisation du marker
     private Marker myMarker;
+    //liste de modèles Gares, ajout des noms de gares dans le modèle de données
     private List <Gares> listeGares = new ArrayList<>();
+    ArrayList<String> addressFragments = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,31 +64,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //je recupère les noms de gares declarés dans les ressources
         String [] gares = getResources().getStringArray(R.array.gares);
+        for (int j=0; j < gares.length; j++){ listeGares.add(new Gares(gares[j])); }
 
-        for (int j=0; j < gares.length; j++){
-            listeGares.add(new Gares(gares[j]));
-        }
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, gares);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gares);
         selectGare.setAdapter(adapter);
         selectGare.setThreshold(1);
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_list) {
-            Intent list_gare = new Intent(MapsActivity.this, SearchTypeActivity.class);
-            startActivity(list_gare);
+        if(id == R.id.action_home) {
+            Intent intentList = new Intent(MapsActivity.this, HomeActivity.class);
+            startActivity(intentList);
+            return true;
+        }
+        if(id == R.id.action_objet) {
+            Intent intentObjet = new Intent(MapsActivity.this, SelectObjectActivity.class);
+            startActivity(intentObjet);
             return true;
         }
         if(id == R.id.action_info) {
-            Intent list_gare = new Intent(MapsActivity.this, OtherActivity.class);
-            startActivity(list_gare);
+            Intent intentOther = new Intent(MapsActivity.this, OtherActivity.class);
+            startActivity(intentOther);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -96,45 +100,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return super.onCreateOptionsMenu(menu);
     }
 
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        List <Address> gareList = null;
-
-        //pour toutes les Gares faire:
-        for (int i=0 ; i <listeGares.size(); i++){
-            Geocoder geocoder = new Geocoder(MapsActivity.this);
-            try {
-                //renvoyer la recherche sur la map
-                gareList = geocoder.getFromLocationName(listeGares.get(i).getName(), 1);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            //recuperer cette recherche et le mettre dans une variable
-            Address address = gareList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            myMarker = mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.search_loupe_m))
-                    .position(latLng).title(listeGares.get(i).getName()));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-        }
-        progressDialog.dismiss();
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                String markertitle = marker.getTitle();
-                    //Log.e("TITLE marker ", "Name gare : "+ markertitle);
-                    Intent i = new Intent(MapsActivity.this, DetailsGare.class);
-                    i.putExtra("gare", markertitle);
-                    startActivity(i);
-                    //finish();
-                return true;
-            }
-        });
-    }
 
     public void submit (View view) {
         GoogleMap googleMap;
@@ -166,6 +131,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
         //je zoom sur la gare en question
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    }
+
+
+    @Override
+    public void onMapReady (GoogleMap googleMap) {
+        mMap = googleMap;
+        List<Address> gareList = null;
+
+        //pour toutes les Gares faire:
+        for (int i = 0; i < listeGares.size(); i++) {
+            Geocoder geocoder = new Geocoder(MapsActivity.this);
+            try {
+                //renvoyer la recherche sur la map
+                gareList = geocoder.getFromLocationName(listeGares.get(i).getName(), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //recuperer cette recherche et le mettre dans une variable
+            Address address = gareList.get(0);
+            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            myMarker = mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.search_loupe))
+                    .position(latLng).title(listeGares.get(i).getName()));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+        }
+        progressDialog.dismiss();
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                String markertitle = marker.getTitle();
+                Log.e("TITLE marker ", "Name gare : "+ markertitle);
+                //Log.e("Adresse Fragment", "value:"+ addressFragments.get(0));
+                //String currentAdresse = addressFragments.get(0);
+                Intent i = new Intent(MapsActivity.this, DetailsGare.class);
+                i.putExtra("gare", markertitle);
+                //i.putExtra("currentAdress", currentAdresse);
+                startActivity(i);
+                //finish();
+                return true;
+            }
+        });
     }
 }
 

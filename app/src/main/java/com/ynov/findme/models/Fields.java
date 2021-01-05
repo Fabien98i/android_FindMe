@@ -1,10 +1,11 @@
 package com.ynov.findme.models;
 
 public class Fields {
+    private String gc_obo_type_c;
     private String gc_obo_nature_c;
     private String gc_obo_gare_origine_r_name;
     private String date;
-    private String gc_obo_type_c;
+
     // private int _obo_gare_origine_r_code_uic_c;
 
     public Fields (String gc_obo_nature_c, String gc_obo_gare_origine_r_name, String date, String gc_obo_type_c) {

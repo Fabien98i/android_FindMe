@@ -5,22 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121853"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="250dp"
-        android:src="@drawable/loupe3" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/logo" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="By Antony FABIEN"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/white"/>
 

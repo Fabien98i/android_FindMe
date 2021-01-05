@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Entrer un nom de ville ou gare ..."
+            android:hint="Entrer un nom d'objet ..."
             android:padding="12dp"
             android:background="@android:drawable/editbox_background"  />
     </LinearLayout>
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#2C3C61">
+        android:background="#004862">
 
         <TextView
             android:id="@+id/textDate"
