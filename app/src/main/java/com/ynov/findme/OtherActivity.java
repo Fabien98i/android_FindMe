@@ -66,5 +66,4 @@ public class OtherActivity extends AppCompatActivity {
         intent.setData(Uri.parse(Constant.URL_WEBSITE_SNCF));
         startActivity(intent);
     }
-
 }

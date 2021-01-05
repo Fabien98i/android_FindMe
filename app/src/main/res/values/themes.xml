@@ -19,10 +19,8 @@
     </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.NoActionBar">
-
         <!-- barre de navigation  -->
         <item name="android:navigationBarColor"> #011942 </item>
-
         <!-- reglage de la transparence -->
         <item name="android:background">#00000000</item>
         <item name="android:windowNoTitle">true</item>
@@ -31,5 +29,4 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
-
 </resources>

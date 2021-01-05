@@ -6,26 +6,140 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SelectObjectActivity">
+    tools:context=".SelectObjectActivity"
+    android:background="#D8D8D8">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/cardview_dark_background">
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choisir une catégorie"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageView
+            android:id="@+id/imageViewValise"
+            android:background="#CA5D15"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:src="@drawable/valise"
+            android:layout_margin="5dp"/>
+
+        <ImageView
+            android:id="@+id/imageViewElectronic"
+            android:background="#5F09A1"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:src="@drawable/electronic"
+            android:layout_margin="5dp"/>
+
+        <ImageView
+            android:id="@+id/imageViewClothes"
+            android:background="#9EC112"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/clothes"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="5dp">
+        <ImageView
+            android:id="@+id/imageViewWallet"
+            android:background="#C12312"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/porte_feuille"/>
+        <ImageView
+            android:id="@+id/imageViewPassport"
+            android:background="#0A1389"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/passport"/>
+        <ImageView
+            android:id="@+id/imageViewOptic"
+            android:background="#07DEDE"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/glasses"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="5dp">
+        <ImageView
+            android:id="@+id/imageViewCle"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:background="#7FEDC9"
+            android:src="@drawable/keys" />
+
+        <ImageView
+            android:id="@+id/imageViewLivre"
+            android:background="#E2DA66"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/livre"/>
+
+        <ImageView
+            android:id="@+id/imageViewMontre"
+            android:background="#FE7552"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/montre"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Selectionner un type d'objet selon la categorie :"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"/>
-    <Button
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_passport" />
-    <Button
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_passport" />
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:text="Vos objets ne figurent pas ici ?\n Cliquer sur le bouton si dessous"/>
+
+        <Button
+            android:onClick="submitSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cliquer ici"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 
 
 </LinearLayout>

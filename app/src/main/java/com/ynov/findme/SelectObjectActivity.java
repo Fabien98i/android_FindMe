@@ -16,26 +16,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SelectObjectActivity extends AppCompatActivity {
-private ListView listViewitem;
+
+    private ImageView imageViewValise;
+    private ImageView imageViewElectronic;
+    private ImageView imageViewClothes;
+    private ImageView imageViewWallet;
+    private ImageView imageViewPassport;
+    private ImageView imageViewOptic;
+    private ImageView imageViewLivre;
+    private ImageView imageViewCle;
+    private ImageView imageViewMontre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_object);
-        List<String> listItems = new ArrayList<>();
+          imageViewValise = (ImageView) findViewById(R.id.imageViewValise);
+          imageViewElectronic = (ImageView) findViewById(R.id.imageViewElectronic);
+          imageViewClothes = (ImageView) findViewById(R.id.imageViewClothes);
+          imageViewWallet = (ImageView) findViewById(R.id.imageViewWallet);
+          imageViewPassport = (ImageView) findViewById(R.id.imageViewPassport);
+          imageViewOptic = (ImageView) findViewById(R.id.imageViewOptic);
+          imageViewLivre = (ImageView) findViewById(R.id.imageViewLivre);
+          imageViewCle = (ImageView) findViewById(R.id.imageViewCle);
+          imageViewMontre = (ImageView) findViewById(R.id.imageViewMontre);
 
-        listItems.add("Bagagerie:+sacs,+valises,+cartables");
-        listItems.add("Appareils+électroniques,+informatiques,+appareils+photo");
-        listItems.add("Vêtements,+chaussures");
-        listItems.add("Porte-monnaie+%2F+portefeuille,+argent,+titres");
-        listItems.add("Pièces+d%27identités+et+papiers+personnels");
-        listItems.add("Optique");
-        listItems.add("Livres,+articles+de+papéterie");
-        listItems.add("Clés,+porte-clés,+badge+magnétique");
-        listItems.add("Bijoux,+montres");
-
-
-/*
 
 
         imageViewValise.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +141,7 @@ private ListView listViewitem;
                 searchType.putExtra("type_object", params);
                 startActivity(searchType);
             }
-        });*/
+        });
     }
 
     // choix des items dans la liste Toolbar

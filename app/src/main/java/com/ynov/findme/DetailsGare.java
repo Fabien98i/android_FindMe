@@ -2,13 +2,9 @@ package com.ynov.findme;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -135,9 +131,6 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
         HashMap<String, String> hashmap;
         ArrayList < HashMap<String, String> > listItem = new ArrayList < HashMap <String, String> >();
         ApiObject api = new Gson().fromJson(json, ApiObject.class);
-
-        //getnHits = nombre de resultats de la recherche
-        //getRows = nombre de resultats à afficher
         if(api.getNhits() > api.getParameters().getRows())
         { tailleList = api.getParameters().getRows(); }
         else { tailleList = api.getNhits(); }
@@ -147,11 +140,10 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
             hashmap = new HashMap<String,String>();
             hashmap.put("textViewObjType", api.getRecords().get(i).getFields().getGc_obo_type_c());
             hashmap.put("textViewObjNature", api.getRecords().get(i).getFields().getGc_obo_nature_c());
-            hashmap.put("textViewObjDate", dateModified);
+            hashmap.put("textViewObjDate", api.getRecords().get(i).getFields().getDate().replace("T", " "));
 
             listItem.add(hashmap);
         }
-        //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
         SimpleAdapter adapter = new SimpleAdapter (
                 DetailsGare.this, listItem, R.layout.item_map_object,
                 new String[] {"textViewObjType", "textViewObjNature", "textViewObjDate"},
@@ -164,11 +156,6 @@ public class DetailsGare extends AppCompatActivity implements DatePickerDialog.O
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String nom_de_gare = api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name();
                 Log.e("Position & Gare", "Postion : "+ position + "Gare : " +nom_de_gare);
-               /* if((nom_de_gare != null) || !(nom_de_gare.isEmpty()) ){
-                    Intent intent = new Intent (SearchObjectActivity.this, MapTrackActivity.class);
-                    intent.putExtra("name_location", nom_de_gare);
-                    startActivity(intent);
-                } */
                 try {
                     String current_address = getIntent().getStringExtra("currentAdress");
                     Intent intent = new Intent (DetailsGare.this, MapTrackActivity.class);

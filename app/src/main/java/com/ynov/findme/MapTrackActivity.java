@@ -7,40 +7,47 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 public class MapTrackActivity extends AppCompatActivity {
     private EditText source;
     private TextView destination;
     private Button track;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_track);
-
         destination = (TextView)findViewById(R.id.destination);
         source = (EditText)findViewById(R.id.source);
         track = (Button)findViewById(R.id.track);
         String location_name = getIntent().getStringExtra("name_location");
         String current_address = getIntent().getStringExtra("currentAdresstoItineraire");
-        if(location_name!= null) {
+
+        if(location_name != null) {
             destination.setText(location_name);
         }
         if(current_address != null ) {
             source.setText(current_address);
         }
-        else {
+        if ( (current_address == null || current_address.equals(" ")) && (location_name == null || location_name.equals(" ")) ){
             AlertDialog.Builder adb = new AlertDialog.Builder(MapTrackActivity.this);
             adb.setTitle("Localisation de l'objet indéterminé ");
             adb.setMessage("La perte de l'objet n'as pas été signalé dans une gare ");
             adb.setPositiveButton("Ok", null);
             adb.show();
+            Intent intent = new Intent(MapTrackActivity.this, SelectObjectActivity.class);
+            startActivity(intent);
         }
+
 
         track.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,4 +94,32 @@ public class MapTrackActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_home) {
+            Intent intentList = new Intent(MapTrackActivity.this, HomeActivity.class);
+            startActivity(intentList);
+            return true;
+        }
+        if(id == R.id.action_objet) {
+            Intent intentObjet = new Intent(MapTrackActivity.this, SelectObjectActivity.class);
+            startActivity(intentObjet);
+            return true;
+        }
+        if(id == R.id.action_info) {
+            Intent intentOther = new Intent(MapTrackActivity.this, OtherActivity.class);
+            startActivity(intentOther);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
 }

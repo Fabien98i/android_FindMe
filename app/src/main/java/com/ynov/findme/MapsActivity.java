@@ -163,28 +163,21 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     public void onLocationChanged(Location location) {
         Geocoder geocoder = new Geocoder((MapsActivity.this));
         //a chaque changement, j'update mes coordonnées et je les récupères pour les renvoyer au service d'itinéraire
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        Log.e("Latitude", "val = " + latitude);
-        Log.e("Long", "val = " +longitude);
         List <Address> listAdresses = null;
         try {
             listAdresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            Log.e("ON est ICI ! ", "voila");
         } catch (IOException e) {
             e.printStackTrace();
         }
         if(listAdresses == null || listAdresses.size() == 0){
-            Log.e("GPS", "erreur aucune adresse !");
+            Log.e("GPS : ", "Erreur, aucune adresse trouvee");
         }
         else{
-            Log.e("ON est LA ! ", "Merde alors ! ");
             Address address = listAdresses.get(0);
             ArrayList<String> addressFragments = new ArrayList<String>();
             for(int i = 0; i <= address.getMaxAddressLineIndex(); i++)
             {
                 addressFragments.add(address.getAddressLine(i));
-                Log.e("Adresse", "value" + addressFragments.get(i) + " _ I _ "+ i);
             }
             current_adresse = addressFragments.get(0);
         }
@@ -206,7 +199,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
-
                 List<Address> gareList = null;
 
                 //pour toutes les Gares faire:
@@ -222,7 +214,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                     Address address = gareList.get(0);
                     LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                     myMarker = mMap.addMarker(new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.search_loupe))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.search_loupe_sm))
                             .position(latLng).title(listeGares.get(i).getName()));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                 }
@@ -232,8 +224,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         String markertitle = marker.getTitle();
-                        Log.e("TITLE marker ", "Name gare : "+ markertitle);
-                        Log.e("Adresse Fragment", "value:"+ current_adresse);
                         String params_current_add = current_adresse;
                         Intent i = new Intent(MapsActivity.this, DetailsGare.class);
                         i.putExtra("gare", markertitle);
@@ -247,7 +237,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     }
 
     public void submit (View view) {
-        GoogleMap googleMap;
         List <Address> gareList = null;
         Geocoder geocoder = new Geocoder(MapsActivity.this);
 

@@ -8,9 +8,6 @@
     tools:context=".MapTrackActivity"
     android:background="#E4E4E5">
 
-    <include layout="@layout/activity_toolbar" />
-
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

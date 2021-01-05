@@ -46,8 +46,6 @@ public class SearchObjectActivity extends AppCompatActivity implements DatePicke
 
     private EditText editTextCity;
     private ListView listViewType;
-    //Création de la ArrayList qui nous permettra de remplir la listView
-    //private List<String> stringList = new ArrayList<>();
 
     //Declaration de l'adaptateur
     private ArrayAdapter<String> adapter ;
@@ -108,7 +106,6 @@ public class SearchObjectActivity extends AppCompatActivity implements DatePicke
             startActivity(intentMap);
             return true;
         }
-
         if(id == R.id.action_info) {
             Intent intentOther = new Intent(SearchObjectActivity.this, OtherActivity.class);
             startActivity(intentOther);
@@ -120,7 +117,6 @@ public class SearchObjectActivity extends AppCompatActivity implements DatePicke
             startActivity(intentList);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -153,16 +149,11 @@ public class SearchObjectActivity extends AppCompatActivity implements DatePicke
         textDate.setText(currentDateFullString);
 
         //convert the date (dd/mm/yyyy) to (yyyy-mm-dd)
-        //Log.e(" 0 Date String ", "DATA FIELD: " + currentDateString);
-
         try {
             Date date = new SimpleDateFormat( DATE_FORMAT , Locale.ENGLISH ).parse(currentDateString);
             DateFormat formatter = new SimpleDateFormat( DATE_DASH_FORMAT , Locale.getDefault() );
             String trueDate = formatter.format( date.getTime() );
-            //Log.e(" 2 Date String ", " - TRUE DATE: " + trueDate);
-
             editTextCity.getText();
-            //Log.e("Title", "IT'S : " +  editTextCity.getText());
 
             // HTTP REQUEST
             RequestQueue queue = Volley.newRequestQueue(this);
@@ -202,7 +193,6 @@ public class SearchObjectActivity extends AppCompatActivity implements DatePicke
         HashMap<String, String> hashmap;
         ArrayList < HashMap<String, String> > listItem = new ArrayList < HashMap <String, String> >();
 
-        //Liaison de GSON vers le modele: ApiObjects.
         ApiObject api = new Gson().fromJson(json, ApiObject.class);
         int tailleList = 0;
 
@@ -216,15 +206,12 @@ public class SearchObjectActivity extends AppCompatActivity implements DatePicke
         }
         hashmap = new HashMap<String, String>();
         //remplissage de la liste en fonction du nombre de lignes
-        for (int i = 0; i < tailleList; i++) {
-            //stringList.add(" - Gare :  "       + api.getRecords().get(i).getFields().getGc_obo_gare_origine_r_name() +
-            //        "\n    Date :  "   + api.getRecords().get(i).getFields().getDate());
+        for (int i = 0; i < tailleList; i++)
+        {
             hashmap = new HashMap<String,String>();
             hashmap.put("textViewGare", api.getRecords().get(i).getFields().getGc_obo_gare_origine_r_name());
-            hashmap.put("textViewDate", api.getRecords().get(i).getFields().getDate());
+            hashmap.put("textViewDate", api.getRecords().get(i).getFields().getDate().replace("T", " "));
             listItem.add(hashmap);
-            Log.e("Hasmap", "Name ::: "+ api.getRecords().get(i).getFields().getGc_obo_gare_origine_r_name());
-            Log.e("Hasmap", "NOM DE GARE : : : : : : : : " + hashmap.get("Nom de gare"));
         }
         //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
         SimpleAdapter adapter = new SimpleAdapter (SearchObjectActivity.this, listItem, R.layout.item_gare,
@@ -234,12 +221,6 @@ public class SearchObjectActivity extends AppCompatActivity implements DatePicke
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String nom_de_gare = api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name();
-                Log.e("Position & Gare", "Postion : "+ position + "Gare : " +nom_de_gare);
-               /* if((nom_de_gare != null) || !(nom_de_gare.isEmpty()) ){
-                    Intent intent = new Intent (SearchObjectActivity.this, MapTrackActivity.class);
-                    intent.putExtra("name_location", nom_de_gare);
-                    startActivity(intent);
-                } */
                 try {
                     Intent intent = new Intent (SearchObjectActivity.this, MapTrackActivity.class);
                     intent.putExtra("name_location", nom_de_gare);
@@ -262,11 +243,9 @@ public class SearchObjectActivity extends AppCompatActivity implements DatePicke
                 AlertDialog.Builder adb = new AlertDialog.Builder(SearchObjectActivity.this);
                 adb.setTitle("Nature de la perte:  " + api.getRecords().get(position).getFields().getGc_obo_nature_c());
                 adb.setMessage( "\n - Type d'objet:  " + api.getRecords().get(position).getFields().getGc_obo_type_c() +
-                        "\n - A la date du:  "       + currentDate +
+                        "\n - A la date du:  "       + api.getRecords().get(position).getFields().getDate().replace("T", " ")+
                         "\n - Localisation:  "       + api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name());
-                //on indique que l'on veut le bouton ok à notre boite de dialogue
                 adb.setPositiveButton("Ok", null);
-                //on affiche la boite de dialogue
                 adb.show();
                 return false;
             }

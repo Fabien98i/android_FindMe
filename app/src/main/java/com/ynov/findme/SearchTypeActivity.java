@@ -156,10 +156,8 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
             Date date = new SimpleDateFormat( DATE_FORMAT , Locale.ENGLISH ).parse(currentDateString);
             DateFormat formatter = new SimpleDateFormat( DATE_DASH_FORMAT , Locale.getDefault() );
             String trueDate = formatter.format( date.getTime() );
-            //Log.e(" 2 Date String ", " - TRUE DATE: " + trueDate);
 
             editTextCity.getText();
-            //Log.e("Title", "IT'S : " +  editTextCity.getText());
             // HTTP REQUEST
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = String.format
@@ -211,10 +209,9 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
             hashmap = new HashMap<String,String>();
             hashmap.put("textViewObjType", api.getRecords().get(i).getFields().getGc_obo_type_c());
             hashmap.put("textViewObjNature", api.getRecords().get(i).getFields().getGc_obo_nature_c());
-            hashmap.put("textViewObjDate", currentDate);
+            hashmap.put("textViewObjDate", api.getRecords().get(i).getFields().getDate().replace("T", " "));
 
             listItem.add(hashmap);
-            Log.e("HASHMAP", "Message +++ " + hashmap.get("textViewObjType"));
         }
         //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
         SimpleAdapter adapter = new SimpleAdapter (
@@ -231,7 +228,7 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
                 AlertDialog.Builder adb = new AlertDialog.Builder(SearchTypeActivity.this);
                 adb.setTitle("Nature de la perte:  " + api.getRecords().get(position).getFields().getGc_obo_nature_c());
                 adb.setMessage( "\n - Type d'objet:  " + api.getRecords().get(position).getFields().getGc_obo_type_c() +
-                        "\n - A la date du:  "       + currentDate +
+                        "\n - A la date du:  "       + api.getRecords().get(position).getFields().getDate().replaceAll("T", " ") +
                         "\n - Localisation:  "       + api.getRecords().get(position).getFields().getGc_obo_gare_origine_r_name());
                 //on indique que l'on veut le bouton ok à notre boite de dialogue
                 adb.setPositiveButton("Ok", null);
@@ -241,29 +238,3 @@ public class  SearchTypeActivity extends AppCompatActivity implements DatePicker
         });
     }
 }
-
-
-
-/*
-*         // String myDate = (String)textDate.getText();
-        // Log.e(" - Date String ", " - DATA FIELD: " + myDate);
-        adapter = new  ArrayAdapter<String>
-                ( SearchTypeActivity.this,android.R.layout.simple_list_item_1, stringList) {
-            @Override
-            public View getView (int position, View convertView, ViewGroup parent){
-                // Cast the list view each item as text view
-                TextView item = (TextView) super.getView (position,convertView,parent);
-                // Set the typeface/font for the current item
-                item.setTypeface(mTypeface);
-                // Set the list view item's text color
-                item.setTextColor(Color.parseColor("#160A67"));
-                // Set the item text style to bold
-                item.setTypeface(item.getTypeface(), Typeface.BOLD);
-                // Change the item text size
-                item.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
-                // return the view
-                return item;
-            }
-        };
-        listViewType.setAdapter(adapter);
- * */
