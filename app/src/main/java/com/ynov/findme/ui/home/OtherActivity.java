@@ -1,4 +1,4 @@
-package com.ynov.findme;
+package com.ynov.findme.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.ynov.findme.R;
+import com.ynov.findme.ui.listing.SelectObjectActivity;
+import com.ynov.findme.ui.maps.MapsActivity;
 import com.ynov.findme.utils.Constant;
 
 public class OtherActivity extends AppCompatActivity {

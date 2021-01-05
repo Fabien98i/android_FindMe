@@ -1,4 +1,4 @@
-package com.ynov.findme;
+package com.ynov.findme.ui.maps;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -26,7 +26,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ynov.findme.ui.home.OtherActivity;
+import com.ynov.findme.R;
+import com.ynov.findme.ui.listing.SelectObjectActivity;
 import com.ynov.findme.models.Gares;
+import com.ynov.findme.ui.home.HomeActivity;
+import com.ynov.findme.ui.listing.DetailsGare;
 import com.ynov.findme.utils.FastDialog;
 import com.ynov.findme.utils.Network;
 
@@ -38,7 +43,6 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 public class MapsActivity extends FragmentActivity implements LocationListener {
 

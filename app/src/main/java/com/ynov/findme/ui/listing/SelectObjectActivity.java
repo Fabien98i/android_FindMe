@@ -1,4 +1,4 @@
-package com.ynov.findme;
+package com.ynov.findme.ui.listing;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,15 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ynov.findme.R;
+import com.ynov.findme.ui.home.HomeActivity;
+import com.ynov.findme.ui.home.OtherActivity;
+import com.ynov.findme.ui.maps.MapsActivity;
 
 public class SelectObjectActivity extends AppCompatActivity {
-
     private ImageView imageViewValise;
     private ImageView imageViewElectronic;
     private ImageView imageViewClothes;
@@ -26,7 +25,6 @@ public class SelectObjectActivity extends AppCompatActivity {
     private ImageView imageViewLivre;
     private ImageView imageViewCle;
     private ImageView imageViewMontre;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +38,6 @@ public class SelectObjectActivity extends AppCompatActivity {
           imageViewLivre = (ImageView) findViewById(R.id.imageViewLivre);
           imageViewCle = (ImageView) findViewById(R.id.imageViewCle);
           imageViewMontre = (ImageView) findViewById(R.id.imageViewMontre);
-
-
 
         imageViewValise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +168,6 @@ public class SelectObjectActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
 
     public void submitSearch(View view) {
         Intent intentSearchObject = new Intent(SelectObjectActivity.this, SearchObjectActivity.class);

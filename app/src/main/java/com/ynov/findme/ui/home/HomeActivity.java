@@ -1,4 +1,4 @@
-package com.ynov.findme;
+package com.ynov.findme.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
+import com.ynov.findme.ui.maps.MapsActivity;
+import com.ynov.findme.R;
+import com.ynov.findme.ui.listing.SelectObjectActivity;
 
 public class HomeActivity extends AppCompatActivity {
     @Override

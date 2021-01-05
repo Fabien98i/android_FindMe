@@ -1,4 +1,4 @@
-package com.ynov.findme;
+package com.ynov.findme.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ProgressBar;
 
-import java.sql.Time;
+import com.ynov.findme.R;
+import com.ynov.findme.ui.home.HomeActivity;
+
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private Timer myTimer;

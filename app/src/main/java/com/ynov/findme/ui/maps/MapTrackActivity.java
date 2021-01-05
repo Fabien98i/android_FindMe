@@ -1,4 +1,4 @@
-package com.ynov.findme;
+package com.ynov.findme.ui.maps;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
+
+import com.ynov.findme.ui.home.OtherActivity;
+import com.ynov.findme.R;
+import com.ynov.findme.ui.listing.SelectObjectActivity;
+import com.ynov.findme.ui.home.HomeActivity;
 
 public class MapTrackActivity extends AppCompatActivity {
     private EditText source;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MapTrackActivity"
+    tools:context=".ui.maps.MapTrackActivity"
     android:background="#E4E4E5">
 
     <EditText
